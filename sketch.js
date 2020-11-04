@@ -6,14 +6,14 @@ function setup() {
     createCanvas(400, 400);
     rider = new Rider()
     for (let i = 0; i < 10; i++) {
-        coins.push(new Coin(i * 50 + 200, 200))
+        coins.push(new Coin(i * random(50, 200) + 200, random(height)))
     }
 }
 
 function draw() {
 
     translate(-rider.xvel * frameCount, 0)
-    background(220, 90)
+    background(220, 120)
     fill("orange")
     noStroke()
 
