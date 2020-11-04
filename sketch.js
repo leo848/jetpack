@@ -5,7 +5,7 @@ let timer = 0;
 function setup() {
     createCanvas(400, 400);
     rider = new Rider()
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 100; i++) {
         coins.push(new Coin(i * random(50, 200) + 200, random(height)))
     }
 }
