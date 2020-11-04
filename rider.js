@@ -1,29 +1,32 @@
 class Rider {
     constructor() {
         this.x = 50
+        this.xvel = 1
         this.y = 200
+        this.yvel = 2
         this.gravity = true
+        this.r = 20
     }
 
     ride() {
 
         if (this.gravity) {
-            this.y += 2
+            this.y += this.yvel
         } else {
-            this.y -= 2
+            this.y -= this.yvel
         }
 
         if (this.y >= height) {
-            this.y -= 4
+            this.y -= this.yvel + 1
         } else if (this.y <= 0) {
-            this.y += 4
+            this.y += this.yvel + 1
         }
 
-        this.x++;
+        this.x += this.xvel;
     }
 
     display() {
-        circle(this.x, this.y, 20)
+        circle(this.x, this.y, this.r)
     }
 }
 
@@ -45,5 +48,10 @@ class Coin {
         pop()
     }
 
+    plopIfRiderNearby() {
+        if (Math.abs(rider.x - this.x) < rider.r && Math.abs(rider.y - this.y) < rider.r) {
+            this.r = 0
+        }
+    }
 
 }

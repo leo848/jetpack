@@ -1,5 +1,6 @@
 let rider;
 let coins = [];
+let timer = 0;
 
 function setup() {
     createCanvas(400, 400);
@@ -10,16 +11,20 @@ function setup() {
 }
 
 function draw() {
+
+    translate(-rider.xvel * frameCount, 0)
     background(220, 90)
     fill("orange")
     noStroke()
 
-    translate(-frameCount, 0)
+
+
     rider.ride()
     rider.display()
 
     for (let coin of coins) {
         coin.display()
+        coin.plopIfRiderNearby()
     }
 
     if (mouseIsPressed) {
