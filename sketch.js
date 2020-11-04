@@ -1,9 +1,10 @@
 let rider;
 let coins = [];
+let lineObstacles = [];
 let timer = 0;
 
 function setup (){
-	createCanvas(400, 400);
+	createCanvas(600, 400);
 	rider = new Rider();
 	for (let i = 0; i < 100; i++) {
 		coins.push(
@@ -13,20 +14,60 @@ function setup (){
 			),
 		);
 	}
+	for (let i = 0; i < 1; i++) {
+		lineObstacles.push(
+			new LineObstacle(200, 200, 400, 200),
+		);
+	}
 }
 
 function draw (){
-	translate(-rider.xvel * frameCount, 0);
-	background(220, 120);
-	fill('orange');
+	background(220);
+	text(Math.floor(rider.x / 8), 0, 0 + 20);
 	noStroke();
 
+	// translate(-rider.xvel * frameCount, 0);
+	translate(-frameCount, 0);
+	fill('orange');
 	rider.ride();
 	rider.display();
 
 	for (let coin of coins) {
 		coin.display();
 		coin.plopIfRiderNearby();
+	}
+
+	for (let lineObstacle of lineObstacles) {
+		lineObstacle.display();
+		lineObstacle.riderNearby();
+	}
+
+	for (let i = -1; i < 5; i++) {
+		stroke(0);
+		line(
+			rider.x +
+				(800 - rider.x % 800) +
+				i * 800,
+			height,
+			rider.x +
+				(800 - rider.x % 800) +
+				i * 800,
+			0,
+		);
+		noStroke();
+		fill(0, 0, 0);
+		textSize(20);
+		text(
+			(rider.x +
+				(800 - rider.x % 800) +
+				i * 800) /
+				8,
+			rider.x +
+				(800 - rider.x % 800) +
+				i * 800 +
+				5,
+			height,
+		);
 	}
 
 	if (mouseIsPressed) {

@@ -1,3 +1,5 @@
+const print = console.log;
+
 class Rider {
 	constructor () {
 		this.x = 50;
@@ -53,7 +55,42 @@ class Coin {
 				rider.r &&
 			Math.abs(rider.y - this.y) < rider.r
 		) {
-			this.r = 0;
+			let interval = setInterval(() => {
+				if (this.r >= 0) {
+					this.r--;
+				} else {
+					this.r = 0;
+					clearInterval(interval);
+				}
+			}, 20);
 		}
+	}
+}
+
+class LineObstacle {
+	constructor (x1, y1, x2, y2) {
+		this.x1 = x1;
+		this.y1 = y1;
+		this.x2 = x2;
+		this.y2 = y2;
+		this.angle = Math.atan2(y2 - y1, x2 - x1);
+	}
+
+	display () {
+		push();
+
+		strokeWeight(6);
+		stroke(255, 0, 0);
+		line(this.x1, this.y1, this.x2, this.y2);
+
+		pop();
+	}
+
+	riderNearby () {
+		let returnValue =
+			Math.abs(rider.y - this.y1) < 20 &&
+			rider.x > this.x1 &&
+			rider.x < this.x2;
+		return returnValue;
 	}
 }
