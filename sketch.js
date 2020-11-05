@@ -2,6 +2,7 @@ let rider;
 let coins = [];
 let lineObstacles = [];
 let timer = 0;
+let dead = false;
 
 function setup (){
 	createCanvas(600, 400);
@@ -27,7 +28,7 @@ function draw (){
 	noStroke();
 
 	// translate(-rider.xvel * frameCount, 0);
-	translate(-frameCount, 0);
+	if (!dead) translate(-frameCount, 0);
 	fill('orange');
 	rider.ride();
 	rider.display();
@@ -39,10 +40,13 @@ function draw (){
 
 	for (let lineObstacle of lineObstacles) {
 		lineObstacle.display();
-		lineObstacle.riderNearby();
+		if (lineObstacle.riderNearby()) {
+			rider.kill('lineObstacle');
+			dead = true;
+		}
 	}
 
-	for (let i = -1; i < 5; i++) {
+	for (let i = -1; i < 5 && !dead; i++) {
 		stroke(0);
 		line(
 			rider.x +
@@ -69,6 +73,10 @@ function draw (){
 			height,
 		);
 	}
+
+	// if (dead) {
+	// 	splashScreen.show();
+	// }
 
 	if (mouseIsPressed) {
 		rider.gravity = false;

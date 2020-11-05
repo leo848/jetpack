@@ -11,23 +11,37 @@ class Rider {
 	}
 
 	ride () {
-		if (this.gravity) {
-			this.y += this.yvel;
-		} else {
-			this.y -= this.yvel;
-		}
+		if (!this.immovable) {
+			if (this.gravity) {
+				this.y += this.yvel;
+			} else {
+				this.y -= this.yvel;
+			}
 
-		if (this.y >= height) {
-			this.y -= this.yvel + 1;
-		} else if (this.y <= 0) {
-			this.y += this.yvel + 1;
-		}
+			if (this.y >= height) {
+				this.y -= this.yvel + 1;
+			} else if (this.y <= 0) {
+				this.y += this.yvel + 1;
+			}
 
-		this.x += this.xvel;
+			this.x += this.xvel;
+		}
 	}
 
 	display () {
 		circle(this.x, this.y, this.r);
+	}
+
+	kill (msg) {
+		let score = this.x / 8;
+
+		this.x = 0;
+		this.y = 0;
+		this.immovable = true;
+		showSplashScreen(
+			score.toFixed(0),
+			DEATH_MESSAGES[msg],
+		);
 	}
 }
 
@@ -93,4 +107,24 @@ class LineObstacle {
 			rider.x < this.x2;
 		return returnValue;
 	}
+}
+
+function showSplashScreen (score, msg){
+	noLoop();
+
+	print(score, msg);
+	translate(frameCount, 0);
+
+	rectMode(CENTER);
+	rect(
+		width / 2,
+		height / 2,
+		width - 40,
+		height - 40,
+	);
+
+	fill(0, 0, 0);
+
+	textAlign(CENTER, CENTER);
+	text(score, width / 2, height / 2);
 }
