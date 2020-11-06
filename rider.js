@@ -112,6 +112,8 @@ class LineObstacle {
 function showSplashScreen (score, msg){
 	noLoop();
 
+	background(220);
+
 	print(score, msg);
 	translate(frameCount, 0);
 
@@ -124,7 +126,25 @@ function showSplashScreen (score, msg){
 	);
 
 	fill(0, 0, 0);
-
+	textSize(100);
 	textAlign(CENTER, CENTER);
-	text(score, width / 2, height / 2);
+	text(score + 'm', width / 2, height / 2);
+	textSize(40);
+	text(
+		random(msg).replace(
+			'{player}',
+			playerName,
+		),
+		width / 2,
+		height / 2 + 100,
+	);
+	fill(200, 200, 0);
+	let playAgain = rect(
+		width / 2,
+		height / 2 - 200,
+		width - 200,
+		200,
+	);
+
+	playAgain.mousePressed(startAgain);
 }

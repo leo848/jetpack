@@ -3,6 +3,7 @@ let coins = [];
 let lineObstacles = [];
 let timer = 0;
 let dead = false;
+let playerName = 'Leo'; //window.prompt('Name?');
 
 function setup (){
 	createCanvas(600, 400);
