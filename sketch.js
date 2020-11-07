@@ -6,15 +6,30 @@ let dead = false;
 let onSplash = false;
 let playerName = 'Leo'; //window.prompt('Name?');
 let mouseElement;
+let bricksImage;
+
+function preload (){
+	bricksImage = loadImage('bricks.png');
+}
 
 function setup (){
 	createCanvas(600, 400);
 	rider = new Rider();
 	mouseElement = createDiv(
-		mouseX + ', ' + mouseY,
+		mouseX +
+			', ' +
+			mouseY +
+			'; fps=' +
+			frameRate(),
 	);
 	setInterval(() => {
-		mouseElement.html(mouseX + ', ' + mouseY);
+		mouseElement.html(
+			mouseX +
+				', ' +
+				mouseY +
+				'; fps=' +
+				frameRate().toFixed(1),
+		);
 	}, 50);
 	for (let i = 0; i < 100; i++) {
 		coins.push(
@@ -34,9 +49,26 @@ function setup (){
 }
 
 function draw (){
-	push();
-
 	background(220);
+	push();
+	if (!dead)
+		translate((-rider.x + 40) * 1.1, 0); // translate the wall so that it moves
+	for (let i = -2; i < 3; i++) {
+		imgWidth = height;
+		image(
+			bricksImage, //image
+			rider.x +
+				imgWidth -
+				rider.x % imgWidth +
+				i * imgWidth, // x loc
+			0, // y loc
+			imgWidth,
+			height, // width
+			// height
+		);
+	}
+	pop();
+
 	textSize(20);
 	textFont('Inter');
 	text(Math.floor(rider.x / 8) + 'm', 0, 20); // display meters
@@ -45,7 +77,7 @@ function draw (){
 	noStroke();
 
 	// translate(-rider.xvel * frameCount, 0);
-	if (!dead) translate(-rider.x + 20, 0);
+	if (!dead) translate(-rider.x + 40, 0);
 	fill('orange');
 	rider.ride();
 	rider.display();
@@ -102,11 +134,16 @@ function draw (){
 			rider.gravity = true;
 		}, 200);
 	}
-
-	pop();
 }
 
 function mousePressed (){
+	if (!dead) {
+		rider.yvel++;
+		setTimeout(() => {
+			rider.yvel--;
+		}, 500);
+	}
+
 	if (
 		mouseX > 125 &&
 		mouseX < 475 &&
@@ -120,5 +157,19 @@ function mousePressed (){
 		rider.immovable = false;
 
 		loop();
+	}
+}
+
+function mouseReleased (){
+	if (!dead) {
+		rider.yvel = 0.2;
+		let mouseInterval = setInterval(() => {
+			if (rider.yvel <= 2) {
+				rider.yvel += 0.03;
+			} else {
+				rider.yvel = 2;
+				clearInterval(mouseInterval);
+			}
+		}, 5);
 	}
 }

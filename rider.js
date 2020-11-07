@@ -2,13 +2,27 @@ const print = console.log;
 
 class Rider {
 	constructor () {
-		this.x = 50;
-		this.xvel = 1;
-		this.y = 200;
-		this.yvel = 2;
-		this.gravity = true;
-		this.r = 20;
-		this.coins = 0;
+		let options = {
+			x       : 50,
+			xvel    : 1,
+			y       : 200,
+			yvel    : 2,
+			gravity : true,
+			r       : 20,
+			coins   : 0,
+			onFloor : false,
+			onCeil  : false,
+			midAir  : true,
+		};
+
+		for (let option of Object.keys(options)) {
+			eval(
+				'this.' +
+					option +
+					' = ' +
+					options[option],
+			);
+		}
 	}
 
 	ride () {
@@ -19,10 +33,20 @@ class Rider {
 				this.y -= this.yvel;
 			}
 
-			if (this.y >= height) {
-				this.y -= this.yvel + 1;
-			} else if (this.y <= 0) {
-				this.y += this.yvel + 1;
+			if (this.y >= height - 20) {
+				this.y -= this.yvel;
+				this.onCeil = false;
+				this.midAir = false;
+				this.onFloor = true;
+			} else if (this.y <= 20) {
+				this.y += this.yvel;
+				this.onCeil = true;
+				this.midAir = false;
+				this.onFloor = false;
+			} else {
+				this.onCeil = false;
+				this.midAir = true;
+				this.onFloor = false;
 			}
 
 			this.x += this.xvel;
