@@ -3,11 +3,19 @@ let coins = [];
 let lineObstacles = [];
 let timer = 0;
 let dead = false;
+let onSplash = false;
 let playerName = 'Leo'; //window.prompt('Name?');
+let mouseElement;
 
 function setup (){
 	createCanvas(600, 400);
 	rider = new Rider();
+	mouseElement = createDiv(
+		mouseX + ', ' + mouseY,
+	);
+	setInterval(() => {
+		mouseElement.html(mouseX + ', ' + mouseY);
+	}, 50);
 	for (let i = 0; i < 100; i++) {
 		coins.push(
 			new Coin(
@@ -16,20 +24,28 @@ function setup (){
 			),
 		);
 	}
-	for (let i = 0; i < 1; i++) {
+	for (let i = 1; i < 100; i++) {
+		let j = i * 120 * random(2, 5);
+		let k = random(height);
 		lineObstacles.push(
-			new LineObstacle(200, 200, 400, 200),
+			new LineObstacle(j, k, j + 200, k),
 		);
 	}
 }
 
 function draw (){
+	push();
+
 	background(220);
-	text(Math.floor(rider.x / 8), 0, 0 + 20);
+	textSize(20);
+	textFont('Inter');
+	text(Math.floor(rider.x / 8) + 'm', 0, 20); // display meters
+	text(rider.coins + ' Coins', 0, 40); // display meters
+
 	noStroke();
 
 	// translate(-rider.xvel * frameCount, 0);
-	if (!dead) translate(-frameCount, 0);
+	if (!dead) translate(-rider.x + 20, 0);
 	fill('orange');
 	rider.ride();
 	rider.display();
@@ -47,7 +63,7 @@ function draw (){
 		}
 	}
 
-	for (let i = -1; i < 5 && !dead; i++) {
+	for (let i = -1; i < 5; i++) {
 		stroke(0);
 		line(
 			rider.x +
@@ -85,5 +101,24 @@ function draw (){
 		setTimeout(() => {
 			rider.gravity = true;
 		}, 200);
+	}
+
+	pop();
+}
+
+function mousePressed (){
+	if (
+		mouseX > 125 &&
+		mouseX < 475 &&
+		mouseY > 50 &&
+		mouseY < 110 // press on playy again in splash
+	) {
+		onSplash = false;
+		dead = false;
+		rider.x = 0;
+		rider.y = height / 2;
+		rider.immovable = false;
+
+		loop();
 	}
 }

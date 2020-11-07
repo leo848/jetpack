@@ -8,6 +8,7 @@ class Rider {
 		this.yvel = 2;
 		this.gravity = true;
 		this.r = 20;
+		this.coins = 0;
 	}
 
 	ride () {
@@ -38,8 +39,10 @@ class Rider {
 		this.x = 0;
 		this.y = 0;
 		this.immovable = true;
+		this.coins = 0;
 		showSplashScreen(
 			score.toFixed(0),
+			this.coins,
 			DEATH_MESSAGES[msg],
 		);
 	}
@@ -69,6 +72,8 @@ class Coin {
 				rider.r &&
 			Math.abs(rider.y - this.y) < rider.r
 		) {
+			rider.coins++;
+			this.plopIfRiderNearby = function (){};
 			let interval = setInterval(() => {
 				if (this.r >= 0) {
 					this.r--;
@@ -109,42 +114,34 @@ class LineObstacle {
 	}
 }
 
-function showSplashScreen (score, msg){
+function showSplashScreen (score, coins, msg){
+	onSplash = true;
 	noLoop();
+	resetMatrix();
 
-	background(220);
-
+	stroke(0);
 	print(score, msg);
-	translate(frameCount, 0);
+	translate(width / 2, height / 2);
 
 	rectMode(CENTER);
-	rect(
-		width / 2,
-		height / 2,
-		width - 40,
-		height - 40,
-	);
+	rect(0, 0, width - 40, height - 40);
 
 	fill(0, 0, 0);
 	textSize(100);
 	textAlign(CENTER, CENTER);
-	text(score + 'm', width / 2, height / 2);
+	text(score + 'm', 0, 0);
 	textSize(40);
 	text(
 		random(msg).replace(
 			'{player}',
 			playerName,
 		),
-		width / 2,
-		height / 2 + 100,
-	);
-	fill(200, 200, 0);
-	let playAgain = rect(
-		width / 2,
-		height / 2 - 200,
-		width - 200,
-		200,
+		0,
+		+100,
 	);
 
-	playAgain.mousePressed(startAgain);
+	fill(255, 255, 0);
+	rect(0, -120, width - 250, 60);
+	fill(0);
+	text('Play again?', 0, -120);
 }
