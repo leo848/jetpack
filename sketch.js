@@ -138,10 +138,10 @@ function draw (){
 
 function mousePressed (){
 	if (!dead) {
-		rider.yvel++;
+		rider.yvel *= 2;
 		setTimeout(() => {
-			rider.yvel--;
-		}, 500);
+			rider.yvel /= 2;
+		}, 1000);
 	}
 
 	if (
