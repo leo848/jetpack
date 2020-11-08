@@ -164,12 +164,12 @@ function mouseReleased (){
 	if (!dead) {
 		rider.yvel = 0.2;
 		let mouseInterval = setInterval(() => {
-			if (rider.yvel <= 2) {
+			if (rider.yvel <= 3) {
 				rider.yvel += 0.03;
 			} else {
-				rider.yvel = 2;
+				rider.yvel = 3;
 				clearInterval(mouseInterval);
 			}
-		}, 5);
+		}, 20);
 	}
 }

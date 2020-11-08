@@ -6,7 +6,7 @@ class Rider {
 			x       : 50,
 			xvel    : 1,
 			y       : 200,
-			yvel    : 2,
+			yvel    : 3,
 			gravity : true,
 			r       : 20,
 			coins   : 0,
